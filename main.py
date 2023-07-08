@@ -39,9 +39,9 @@ async def process_button_click(message: types.Message):
 async def get_name(butt):
     match butt:
         case "music":
-            music()
+            print("music")
         case "info":
-            info()
+            print("info")
 
 
 if __name__ == '__main__':
