@@ -15,10 +15,8 @@ async def on_startup(_):
 bt1 = KeyboardButton("Музыка из аниме")
 bt2 = KeyboardButton("Информация об аниме")
 
-# Создание разметки кнопок
 keyboard = ReplyKeyboardMarkup(resize_keyboard=True).add(bt1, bt2)
 
-# Обработчик команды /start
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
     await message.answer("Привет, чем займемся?", reply_markup=keyboard)
@@ -27,6 +25,7 @@ async def start_command(message: types.Message):
 @dp.message_handler(lambda message: message.text in ["Музыка из аниме", "Информация об аниме"])
 async def process_button_click(message: types.Message):
     a = types.ReplyKeyboardRemove()
+    global butt
     match message.text:
         case "Музыка из аниме":
             await bot.send_message(message.chat.id, text="Введи название для получение музыки из аниме", reply_markup=a)
@@ -34,15 +33,16 @@ async def process_button_click(message: types.Message):
         case "Информация об аниме":
             await bot.send_message(message.chat.id, text="Введи название для получения информации об аниме", reply_markup=a)
             butt = "info"
-    return butt
+    
 
-async def get_name(butt):
+@dp.message_handler(content_types=types.ContentType.TEXT)
+async def handle_text_message(message: types.Message):
+    global butt
     match butt:
         case "music":
-            print("music")
+            await bot.send_message(message.chat.id, text= butt)
         case "info":
-            print("info")
-
+            await bot.send_message(message.chat.id, text= butt)
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
