@@ -49,13 +49,14 @@ async def handle_text_message(message: types.Message):
                 urll = get_url(txt)
                 url2 = urll["url"]
                 get_pic(url2)
-                with open("123.jpg", 'rb') as photo:
-                    await bot.send_photo(message.chat.id, photo=photo, caption=None)
                 stt = urll["stat"]
-                await bot.send_message(message.chat.id, text= url2)
-                await bot.send_message(message.chat.id, text= urll["desc"])
-                await bot.send_message(message.chat.id, text= urll["tags"])
-                await bot.send_message(message.chat.id, text= f"Статус: {stt}")
+                dcc = urll["desc"]
+                with open("123.jpg", 'rb') as photo:
+                    await bot.send_photo(message.chat.id, photo=photo, caption=f"Ссылка: {url2}")
+                    photo.close()
+                # await bot.send_message(message.chat.id, text= urll["desc"])
+                # await bot.send_message(message.chat.id, text= urll["tags"])
+                # await bot.send_message(message.chat.id, text= f"Статус: {stt}")
                 os.remove("123.jpg")
             
     except NameError:

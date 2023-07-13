@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
-from googlesearch import search
+
 
 ua = UserAgent()
 header = {
@@ -20,9 +20,11 @@ def get_url(txtt):
         bs22 = bs21.find('a', class_ = 'cover anime-tooltip')
         bs23 = bs22.get('href')
         print(bs23)
+        txtt = bs23
         bs24 = requests.get(bs23, headers=header)
     elif rs.status_code == 301 or rs.status_code == 302:
         bs24 = requests.get(url, headers=header)
+        txtt = url
     bs1 = BeautifulSoup(bs24.text, 'lxml')
     bs2 = bs1.find('div', class_ = 'c-info-left')
     for div in bs2:
@@ -38,7 +40,6 @@ def get_url(txtt):
     else:
         for a in bs5:
             divv.append(a.text)
-    txtt = url
     return {"url" : txtt, "desc" : divv, "tags" : divvv, "stat" : sts }
     
 
